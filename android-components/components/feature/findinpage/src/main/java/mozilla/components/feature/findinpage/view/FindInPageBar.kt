@@ -10,6 +10,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.TypedValue.COMPLEX_UNIT_PX
+import android.view.KeyEvent
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.VisibleForTesting
@@ -211,6 +213,16 @@ class FindInPageBar @JvmOverloads constructor(
                     }
                 },
             )
+
+            setOnKeyListener(object : View.OnKeyListener {
+                override fun onKey(_view: View, keyCode: Int, _keyEvent: KeyEvent): Boolean {
+                    if (keyCode == KeyEvent.KEYCODE_ESCAPE) {
+                        listener?.onClose()
+                        return true
+                    }
+                    return false
+                }
+            })
 
             onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) {

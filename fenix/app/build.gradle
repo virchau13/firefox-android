@@ -532,6 +532,7 @@ dependencies {
     implementation project(':feature-qr')
     implementation project(':feature-search')
     implementation project(':feature-session')
+    implementation project(':feature-shortcuts')
     implementation project(':feature-syncedtabs')
     implementation project(':feature-toolbar')
     implementation project(':feature-tabs')

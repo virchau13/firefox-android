@@ -9,6 +9,7 @@ import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.AttributeSet
+import android.view.KeyEvent
 import android.widget.FrameLayout
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.ViewCompat
@@ -18,6 +19,7 @@ import mozilla.components.concept.engine.EngineSession
 import mozilla.components.concept.engine.EngineView
 import mozilla.components.concept.engine.mediaquery.PreferredColorScheme
 import mozilla.components.concept.engine.selection.SelectionActionDelegate
+import mozilla.components.support.utils.DispatchKeyHandler
 import org.mozilla.geckoview.BasicSelectionActionDelegate
 import org.mozilla.geckoview.GeckoResult
 import org.mozilla.geckoview.GeckoSession
@@ -220,6 +222,21 @@ class GeckoEngineView @JvmOverloads constructor(
         // https://github.com/mozilla-mobile/android-components/issues/6664
         geckoView.visibility = visibility
         super.setVisibility(visibility)
+    }
+
+    internal var shortcuts: ArrayList<DispatchKeyHandler> = ArrayList()
+
+    override fun addShortcut(shortcut: DispatchKeyHandler) {
+        shortcuts.add(shortcut)
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        for (shortcut in shortcuts) {
+            if (shortcut.dispatchKeyEvent(event)) {
+                return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
     companion object {

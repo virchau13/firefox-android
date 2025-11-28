@@ -85,6 +85,10 @@ import mozilla.components.feature.session.SwipeRefreshFeature
 import mozilla.components.feature.session.behavior.EngineViewBrowserToolbarBehavior
 import mozilla.components.feature.sitepermissions.SitePermissionsFeature
 import mozilla.components.feature.webauthn.WebAuthnFeature
+import mozilla.components.feature.shortcuts.ReloadHandler
+import mozilla.components.feature.shortcuts.NewTabHandler
+import mozilla.components.feature.shortcuts.CloseTabHandler
+import mozilla.components.feature.shortcuts.FindInPageHandler
 import mozilla.components.lib.state.ext.consumeFlow
 import mozilla.components.lib.state.ext.flowScoped
 import mozilla.components.service.glean.private.NoExtras
@@ -886,6 +890,16 @@ abstract class BaseBrowserFragment :
         )
 
         initializeEngineView(toolbarHeight)
+
+        binding.engineView.addShortcut(ReloadHandler(context.components.useCases.sessionUseCases))
+        binding.engineView.addShortcut(NewTabHandler({ 
+            findNavController().nav(
+                R.id.browserFragment,
+                BrowserFragmentDirections.actionGlobalHome(focusOnAddressBar = true)
+            )
+        }))
+        binding.engineView.addShortcut(CloseTabHandler({ this.getCurrentTab()?.id }, context.components.useCases.tabsUseCases))
+        binding.engineView.addShortcut(FindInPageHandler({ findInPageIntegration.withFeature { it.launch() } }))
     }
 
     /**

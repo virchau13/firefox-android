@@ -6,11 +6,13 @@ package mozilla.components.concept.engine
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.view.KeyEvent
 import android.view.View
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import mozilla.components.concept.engine.selection.SelectionActionDelegate
+import mozilla.components.support.utils.DispatchKeyHandler
 
 /**
  * View component that renders web content.
@@ -137,6 +139,20 @@ interface EngineView {
      * @param context The Activity context.
      */
     fun setActivityContext(context: Context?)
+
+    /**
+     * A handler for keyboard bindings such as Ctrl-R.
+     *
+     * @param event The KeyEvent that has been triggered.
+     */
+    fun dispatchKeyEvent(event: KeyEvent): Boolean
+
+    /**
+     * Adds a keyboard shortcut to the view.
+     *
+     * @param shortcut The handler for the keyboard shortcut.
+     */
+    fun addShortcut(shortcut: DispatchKeyHandler)
 
     /**
      * A delegate that will handle interactions with text selection context menus.

@@ -1131,6 +1131,14 @@ projects:
     - support-test
     - support-utils
     - tooling-lint
+  feature-shortcuts:
+    description: Feature implementation for common browser keyboard shortcuts.
+    path: components/feature/shortcuts
+    publish: true
+    upstream_dependencies:
+    - support-utils
+    - feature-session
+    - feature-tabs
   feature-sitepermissions:
     description: A feature for showing site permission request prompts.
     path: components/feature/sitepermissions

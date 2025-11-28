@@ -17,6 +17,7 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Handler
 import android.os.Message
 import android.util.AttributeSet
+import android.view.KeyEvent
 import android.view.PixelCopy
 import android.view.View
 import android.webkit.CookieManager
@@ -63,6 +64,7 @@ import mozilla.components.concept.storage.PageVisit
 import mozilla.components.concept.storage.VisitType
 import mozilla.components.support.ktx.android.view.getRectWithViewLocation
 import mozilla.components.support.ktx.kotlin.tryGetHostFromUrl
+import mozilla.components.support.utils.DispatchKeyHandler
 import mozilla.components.support.utils.DownloadUtils
 
 /**
@@ -779,6 +781,21 @@ class SystemEngineView @JvmOverloads constructor(
             credentialsPair = user to pass
         }
         return credentialsPair
+    }
+
+    internal var shortcuts: ArrayList<DispatchKeyHandler> = ArrayList()
+
+    override fun addShortcut(shortcut: DispatchKeyHandler) {
+        shortcuts.add(shortcut)
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        for (shortcut in shortcuts) {
+            if (shortcut.dispatchKeyEvent(event)) {
+                return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
     companion object {

@@ -6,10 +6,12 @@ package mozilla.components.support.test.fakes.engine
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.view.KeyEvent
 import android.view.View
 import mozilla.components.concept.engine.EngineSession
 import mozilla.components.concept.engine.EngineView
 import mozilla.components.concept.engine.selection.SelectionActionDelegate
+import mozilla.components.support.utils.DispatchKeyHandler
 
 /**
  * A fake [EngineView] to be used in tests.
@@ -30,4 +32,8 @@ class FakeEngineView(context: Context) : View(context), EngineView {
     override fun release() = Unit
 
     override var selectionActionDelegate: SelectionActionDelegate? = null
+
+    override fun addShortcut(shortcut: DispatchKeyHandler) = Unit
+
+    override fun dispatchKeyEvent(event: KeyEvent) = true
 }
